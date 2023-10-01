@@ -1,0 +1,8 @@
+pip install mysql-connector-python
+pip install --upgrade mysql-connector-python
+pip install python-dotenv
+pip install colorama
+
+Deve-se instalar essas bibliotecas pelo terminal para funcionamento do codigo!
+
+Codigo feito por Josué Henrique - TADS22
