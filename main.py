@@ -1,5 +1,6 @@
 import mysql.connector as mysql
 import dotenv as env
+from colorama import Fore
 import os
 
 # importando os valores do arquivo .env
@@ -16,6 +17,18 @@ conexao = mysql.connect(
 cursor = conexao.cursor(buffered=True)
 
 # Funções
+def exibir_menu():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("===============================")
+    print(f"{Fore.LIGHTWHITE_EX}       SISTEMA DE AGENDA       {Fore.RESET}")
+    print("===============================")
+    print(f"1. {Fore.GREEN}Cadastrar{Fore.RESET}")
+    print(f"2. {Fore.CYAN}Buscar{Fore.RESET}")
+    print(f"3. {Fore.YELLOW}Alterar{Fore.RESET}")
+    print(f"4. {Fore.RED}Deletar{Fore.RESET}")
+    print("5. Sair")
+    print("===============================")
+
 def get_nome(cursor):
     resultado = cursor.fetchall()
     if resultado:
@@ -46,22 +59,10 @@ def listar(tabela, id):
             print(linha[0])
         print('')
 
-def exibir_menu():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print("===============================")
-    print("       SISTEMA DE AGENDA       ")
-    print("===============================")
-    print("1. Cadastrar")
-    print("2. Buscar")
-    print("3. Alterar")
-    print("4. Deletar")
-    print("5. Sair")
-    print("===============================")
-
 def cadastrar():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("===============================")
-    print("        TELA DE CADASTRO        ")
+    print(f"        {Fore.GREEN}TELA DE CADASTRO{Fore.RESET}        ")
     print("===============================\n")
 
     while True:
@@ -70,7 +71,7 @@ def cadastrar():
         codigo = cursor.lastrowid # Recupera o ultimo ID AUTO_INCREMENT
 
         #Cadastro de Telefone
-        resposta = '\nTelefone(s)\n'
+        resposta = f'\n{Fore.YELLOW}Telefone(s){Fore.RESET}\n'
         print(resposta)
         while not resposta in 'Nn':
             telefone = str(input('Digite o número: '))
@@ -78,7 +79,7 @@ def cadastrar():
             resposta = str(input('Quer cadastrar outro telefone?(s/n) '))
 
         #Cadastro de Email
-        resposta = '\nEmail(s)\n'
+        resposta = f'\n{Fore.MAGENTA}Email(s){Fore.RESET}\n'
         print(resposta)
         while not resposta in 'Nn':
             email = str(input('Digite o email: '))
@@ -90,7 +91,7 @@ def cadastrar():
 def buscar():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("===============================")
-    print("       TELA DE PESQUISA        ")
+    print(f"       {Fore.CYAN}TELA DE PESQUISA{Fore.RESET}        ")
     print("===============================\n")
 
     while True:
@@ -250,7 +251,7 @@ def buscar():
 def alterar():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("===============================")
-    print("        TELA DE EDIÇÃO         ")
+    print(f"        {Fore.YELLOW}TELA DE EDIÇÃO{Fore.RESET}         ")
     print("===============================\n")
 
     while True:
@@ -341,7 +342,7 @@ def alterar():
 def deletar():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("===============================")
-    print("       TELA DE EXCLUSÃO        ")
+    print(f"       {Fore.RED}TELA DE EXCLUSÃO{Fore.RESET}        ")
     print("===============================\n")
 
     while True:
