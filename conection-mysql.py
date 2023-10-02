@@ -6,7 +6,7 @@ import os
 # importando os valores do arquivo .env
 env.load_dotenv()
 
-# criando a conexao 
+# criando a conexao por MySQL
 conexao = mysql.connect(
     host=os.environ["host"],
     user=os.environ["user"],
