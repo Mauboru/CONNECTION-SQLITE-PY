@@ -1,7 +1,7 @@
 import sqlite3 as sql
 import dotenv as env
 from colorama import Fore
-import os
+import os, main
 
 conexao = sql.connect('sqlite.db')
 cursor = conexao.cursor()
