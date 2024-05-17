@@ -24,24 +24,28 @@ def cadastrar(cursor, conexao):
     print("===============================\n")
 
     while True:
-        nome = str(input('Digite o nome na agenda: '))
-        executar(f'INSERT INTO agenda (nome) VALUES ("{nome}")', cursor, conexao)
-        codigo = cursor.lastrowid # Recupera o ultimo ID AUTO_INCREMENT
+        try:
+            nome = str(input('Digite o nome na agenda: '))
+            executar(f'INSERT INTO agenda (nome) VALUES ("{nome}")', cursor, conexao)
+            codigo = cursor.lastrowid # Recupera o ultimo ID AUTO_INCREMENT
 
-        #Cadastro de Telefone
-        resposta = f'\n{Fore.YELLOW}Telefone(s){Fore.RESET}\n'
-        print(resposta)
-        while not resposta in 'Nn':
-            telefone = str(input('Digite o número: '))
-            executar(f'INSERT INTO telefone (telefone, codigo) VALUES ("{telefone}", "{codigo}")', cursor, conexao)
-            resposta = str(input('Quer cadastrar outro telefone?(s/n) '))
+            #Cadastro de Telefone
+            resposta = f'\n{Fore.YELLOW}Telefone(s){Fore.RESET}\n'
+            print(resposta)
+            while not resposta in 'Nn':
+                telefone = str(input('Digite o número: '))
+                executar(f'INSERT INTO telefone (telefone, codigo) VALUES ("{telefone}", "{codigo}")', cursor, conexao)
+                resposta = str(input('Quer cadastrar outro telefone?(s/n) '))
 
-        #Cadastro de Email
-        resposta = f'\n{Fore.MAGENTA}Email(s){Fore.RESET}\n'
-        print(resposta)
-        while not resposta in 'Nn':
-            email = str(input('Digite o email: '))
-            executar(f'INSERT INTO email (email, codigo) VALUES ("{email}", "{codigo}")', cursor, conexao)
-            resposta = str(input('Quer cadastrar outro email?(s/n) '))
-        break
-
+            #Cadastro de Email
+            resposta = f'\n{Fore.MAGENTA}Email(s){Fore.RESET}\n'
+            print(resposta)
+            while not resposta in 'Nn':
+                email = str(input('Digite o email: '))
+                executar(f'INSERT INTO email (email, codigo) VALUES ("{email}", "{codigo}")', cursor, conexao)
+                resposta = str(input('Quer cadastrar outro email?(s/n) '))
+            break
+        except Exception as e:
+            print(f"{Fore.RED}Ocorreu um erro durante o cadastro: {e}{Fore.RESET}")
+            conexao.rollback()
+            continue
