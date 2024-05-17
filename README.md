@@ -26,12 +26,8 @@ database=""
 
 Agora copie o banco do "init.sql" e crie em seu banco!!
 
-.
-.
-.
-.
-.
-.
-.
+# Observação
+
+Em ambos bancos (mysql ou sqlite) vc devera criar os bancos primeiro, em caso do sqlite precisara tbm pegar o arquivo "sqlite.db" se n tiver criado apenas execute uma primeira vez o codigo da conexao-python-sqlite e ele criara!
 
 Codigo feito por Josué Henrique - TADS22
