@@ -26,52 +26,12 @@ while True:
     elif opcao == "3":
         functions.alterar(cursor, conexao)
     elif opcao == "4":
-        functions.deletar()
+        functions.deletar(cursor, conexao)
     elif opcao == "5":
         print("Saindo do programa. Até logo!")
         break
     else:
         input("Opção inválida. Pressione Enter para continuar...")
-
-# def deletar():
-#     os.system('cls' if os.name == 'nt' else 'clear')
-#     print("===============================")
-#     print(f"       {Fore.RED}TELA DE EXCLUSÃO{Fore.RESET}        ")
-#     print("===============================\n")
-
-#     while True:
-#         print('Agendas: ')
-#         cursor.execute(f'SELECT * FROM agenda')
-#         resultado = cursor.fetchall()
-#         if resultado:
-#             print('')
-#             for linha in resultado:
-#                 print(linha[1])
-#             print('')
-
-#         pesquisa = str(input('Digite o nome da agenda: '))
-
-#         cursor.execute(f'SELECT codigo FROM agenda WHERE nome = "{pesquisa}"')
-        
-#         id = cursor.fetchone()
-#         resultado = verifica_id(id)
-#         if resultado == 'sair':
-#             break
-#         elif resultado == 'refazer':
-#             continue
-
-#         # deletando os telefones com essa chave
-#         executar(f'DELETE FROM telefone WHERE codigo = {id[0]}')
-#         # deletando os emails com essa chave
-#         executar(f'DELETE FROM email WHERE codigo = {id[0]}')
-#         # deletando a agenda com essa chave
-#         executar(f'DELETE FROM agenda WHERE codigo = {id[0]}')
-#         print('\nAgenda deletada com sucesso!')
-
-#         resposta = str(input('\nQuer excluir novamente?(s/n) '))
-#         if resposta in 'Nn':
-#             break
-
 
 cursor.close()
 conexao.close()

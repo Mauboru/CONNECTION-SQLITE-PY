@@ -334,3 +334,47 @@ def alterar(cursor, conexao):
             print(f"{Fore.RED}Ocorreu um erro durante a alteração: {e}{Fore.RESET}")
             conexao.rollback()
             continue
+
+def deletar(cursor, conexao):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("===============================")
+    print(f"       {Fore.RED}TELA DE EXCLUSÃO{Fore.RESET}        ")
+    print("===============================\n")
+
+    while True:
+        try:
+            print('Agendas: ')
+            cursor.execute(f'SELECT * FROM agenda')
+            resultado = cursor.fetchall()
+            if resultado:
+                print('')
+                for linha in resultado:
+                    print(linha[1])
+                print('')
+
+            pesquisa = str(input('Digite o nome da agenda: '))
+
+            cursor.execute(f'SELECT codigo FROM agenda WHERE nome = "{pesquisa}"')
+            
+            id = cursor.fetchone()
+            resultado = verifica_id(id)
+            if resultado == 'sair':
+                break
+            elif resultado == 'refazer':
+                continue
+
+            # deletando os telefones com essa chave
+            executar(f'DELETE FROM telefone WHERE codigo = {id[0]}', cursor, conexao)
+            # deletando os emails com essa chave
+            executar(f'DELETE FROM email WHERE codigo = {id[0]}', cursor, conexao)
+            # deletando a agenda com essa chave
+            executar(f'DELETE FROM agenda WHERE codigo = {id[0]}', cursor, conexao)
+            print('\nAgenda deletada com sucesso!')
+
+            resposta = str(input('\nQuer excluir novamente?(s/n) '))
+            if resposta in 'Nn':
+                break
+        except Exception as e:
+            print(f"{Fore.RED}Ocorreu um erro durante a exclusão: {e}{Fore.RESET}")
+            conexao.rollback()
+            continue
