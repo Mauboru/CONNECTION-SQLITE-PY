@@ -34,6 +34,15 @@ def verifica_id(id):
         else:
             return 'refazer'
 
+def listar(tabela, id, cursor):
+    cursor.execute(f'SELECT * FROM {tabela} WHERE codigo = {id}')
+    resultado = cursor.fetchall()
+    if resultado:
+        print('')
+        for linha in resultado:
+            print(linha[0])
+        print('')
+
 def cadastrar(cursor, conexao):
     os.system('cls' if os.name == 'nt' else 'clear')
     print("===============================")
@@ -226,7 +235,102 @@ def buscar(cursor, conexao):
             if resposta in 'Nn':
                 break
         except Exception as e:
-            print(f"{Fore.RED}Ocorreu um erro durante o cadastro: {e}{Fore.RESET}")
+            print(f"{Fore.RED}Ocorreu um erro durante a busca: {e}{Fore.RESET}")
             conexao.rollback()
             continue
 
+def alterar(cursor, conexao):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("===============================")
+    print(f"        {Fore.YELLOW}TELA DE EDIÇÃO{Fore.RESET}         ")
+    print("===============================\n")
+
+    while True:
+        try:
+            pesquisa = str(input('Digite o nome da agenda: '))
+            cursor.execute(f'SELECT codigo FROM agenda WHERE nome = "{pesquisa}"')
+            
+            id = cursor.fetchone()
+            resultado = verifica_id(id)
+            if resultado == 'sair':
+                break
+            elif resultado == 'refazer':
+                continue
+
+            acao = str(input('O que quer fazer?\n\n1 - Editar\n2 - Adicionar\n3 - Excluir\n\nDigite a ação: '))
+
+            if acao == '1':
+                tipo = str(input('O que vc quer editar?\n\n1 - Nome\n2 - Email\n3 - Telefone\n\nDigite a ação: '))
+
+                if tipo == '1':
+                    nome = str(input('Digite o novo nome da agenda: '))
+                    executar(f'UPDATE agenda SET nome = "{nome}" WHERE codigo = {id[0]}', cursor, conexao)
+                    print('\nAgenda editada com sucesso!')
+
+                elif tipo == '2':
+                    listar('email', id[0], cursor)
+                    email_antigo = str(input('Qual email quer editar? '))
+                    cursor.execute(f'SELECT codigo FROM email WHERE email  = "{email_antigo}"')
+                    
+                    id = cursor.fetchone()
+                    resultado = verifica_id(id)
+                    if resultado == 'sair':
+                        break
+                    elif resultado == 'refazer':
+                        continue
+
+                    email = str(input('Digite o novo email da agenda: '))
+                    executar(f'UPDATE email SET email = "{email}" WHERE email = "{email_antigo}"', cursor, conexao)
+                    print('\nEmail editado com sucesso!')
+
+                elif tipo == '3':
+                    listar('telefone', id[0], cursor)
+                    telefone_antigo = str(input('Qual telefone quer editar? '))
+                    cursor.execute(f'SELECT codigo FROM telefone WHERE telefone  = "{telefone_antigo}"')
+                    
+                    id = cursor.fetchone()
+                    resultado = verifica_id(id)
+                    if resultado == 'sair':
+                        break
+                    elif resultado == 'refazer':
+                        continue
+
+                    telefone = str(input('Digite o novo telefone da agenda: '))
+                    executar(f'UPDATE telefone SET telefone = "{telefone}" WHERE telefone = "{telefone_antigo}"', cursor, conexao)
+                    print('\nTelefone editado com sucesso!')
+
+            elif acao == '2':
+                tipo = str(input('O que vc quer adicionar?\n\n1 - Email\n2 - Telefone\n\nDigite a ação: '))
+
+                if tipo == '1':
+                    email = str(input('Digite o novo email da agenda: '))
+                    executar(f'INSERT INTO email (email, codigo) VALUES ("{email}", {id[0]})', cursor, conexao)
+                    print('\nEmail adicionado com sucesso!')
+
+                elif tipo == '2':
+                    telefone = str(input('Digite o novo telefone da agenda: '))
+                    executar(f'INSERT INTO telefone (telefone, codigo) VALUES ("{telefone}", {id[0]})', cursor, conexao)
+                    print('\nTelefone adicionado com sucesso!')
+
+            elif acao == '3':
+                tipo = str(input('O que vc quer excluir?\n\n1 - Email\n2 - Telefone\n\nDigite a ação: '))
+
+                if tipo == '1':
+                    listar('email', id[0], cursor)
+                    email = str(input('Digite o email: '))
+                    executar(f'DELETE FROM email WHERE email = ("{email}")', cursor, conexao)
+                    print('\nEmail deletado com sucesso!')
+
+                elif tipo == '2':
+                    listar('telefone', id[0], cursor)
+                    telefone = str(input('Digite o telefone: '))
+                    executar(f'DELETE FROM telefone WHERE telefone = ("{telefone}")', cursor, conexao)
+                    print('\nTelefone deletado com sucesso!')
+
+            resposta = str(input('\nQuer editar novamente?(s/n) '))
+            if resposta in 'Nn':
+                break
+        except Exception as e:
+            print(f"{Fore.RED}Ocorreu um erro durante a alteração: {e}{Fore.RESET}")
+            conexao.rollback()
+            continue
